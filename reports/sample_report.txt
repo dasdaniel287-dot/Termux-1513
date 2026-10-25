@@ -1,0 +1,118 @@
+============================================================================
+              WEBSHIELD AI — WEBSITE SECURITY REPORT
+============================================================================
+
+Assessment ID   : ws_sample_audit_2026
+Target Domain   : example.org
+Target URL      : https://example.org/
+Assessment Date : 2026-10-25 11:30:00 UTC
+Authorized Scope: Explicit Permission Confirmed (Safe Non-Destructive Mode)
+Execution Time  : 1.42 seconds
+
+----------------------------------------------------------------------------
+SECURITY POSTURE SCORE: 54 / 100  [ Grade: F ]
+----------------------------------------------------------------------------
+Base Score of 100 with 5 risk deductions totaling 46.0 points applied. Findings summary: 0 Critical, 2 High, 2 Medium, 1 Low, 3 Informational.
+
+Findings Summary: Critical: 0 | High: 2 | Medium: 2 | Low: 1 | Informational: 3
+
+----------------------------------------------------------------------------
+CHECKS PERFORMED
+----------------------------------------------------------------------------
+ [✓] Authorization Confirmation Check
+ [✓] URL Format and Scope Validation
+ [✓] Anti-SSRF and Private Range Guardrails
+ [✓] DNS Record & Email Anti-Spoofing Audit (SPF/DMARC)
+ [✓] TLS/SSL Certificate Expiration & Cipher Suite Verification
+ [✓] HTTP Endpoint Availability & Latency Audit
+ [✓] HTTP Defensive Security Headers Analysis
+ [✓] Public Security Policy & Crawling Hygiene (security.txt, robots.txt)
+
+----------------------------------------------------------------------------
+DETAILED SECURITY FINDINGS & RECOMMENDATIONS
+----------------------------------------------------------------------------
+
+[1] [HIGH] Strict-Transport-Security Missing (ID: HDR-HSTS-MISSING)
+    Component   : HTTP Response Headers
+    Confidence  : Confirmed
+    Evidence    : Strict-Transport-Security header not present in HTTPS response.
+    Explanation : HTTP Strict Transport Security (HSTS) instructs compliant browsers that the domain must only be contacted over HTTPS for a specified duration.
+    Risk Impact : Vulnerable to Man-in-the-Middle (MitM) SSL stripping and insecure HTTP downgrades when users first visit via bookmark or typed domain.
+    Remediation : Add 'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload' in web server config.
+    Verification: curl -sI https://example.org | grep -i strict-transport-security
+
+[2] [HIGH] Content-Security-Policy Header Missing (ID: HDR-CSP-MISSING)
+    Component   : HTTP Response Headers
+    Confidence  : Confirmed
+    Evidence    : Content-Security-Policy header not returned in response.
+    Explanation : Content Security Policy (CSP) is a critical defensive HTTP response header that helps prevent and mitigate Cross-Site Scripting (XSS), data injection, and malicious clickjacking.
+    Risk Impact : Higher blast radius if an XSS flaw exists on the application layer.
+    Remediation : Define a strict CSP beginning with: default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';
+    Verification: curl -sI https://example.org | grep -i content-security-policy
+
+[3] [MEDIUM] X-Content-Type-Options Header Missing (ID: HDR-XCTO-MISSING)
+    Component   : HTTP Response Headers
+    Confidence  : Confirmed
+    Evidence    : X-Content-Type-Options header was not returned.
+    Explanation : X-Content-Type-Options stops browsers from MIME-sniffing a response away from the declared content-type.
+    Risk Impact : Browsers may interpret non-executable MIME types as executable JavaScript or HTML, leading to Drive-by downloads or XSS.
+    Remediation : Configure header: X-Content-Type-Options: nosniff
+    Verification: curl -sI https://example.org | grep -i x-content-type-options
+
+[4] [MEDIUM] Clickjacking Protection Missing (X-Frame-Options) (ID: HDR-XFO-MISSING)
+    Component   : HTTP Response Headers
+    Confidence  : Confirmed
+    Evidence    : Neither X-Frame-Options nor CSP frame-ancestors detected.
+    Explanation : The X-Frame-Options header indicates whether a browser should be allowed to render a page inside a frame or iframe.
+    Risk Impact : UI redressing / Clickjacking attacks could trick authenticated users into unauthorized clicks.
+    Remediation : Add 'X-Frame-Options: DENY' or 'X-Frame-Options: SAMEORIGIN', and include CSP 'frame-ancestors'.
+    Verification: Test framing via a local HTML file with <iframe src='target_url'>.
+
+[5] [LOW] Referrer-Policy Header Missing (ID: HDR-REF-MISSING)
+    Component   : HTTP Response Headers
+    Confidence  : Confirmed
+    Evidence    : Referrer-Policy header is absent.
+    Explanation : Referrer-Policy governs how much referrer information is sent along with requests made from your site.
+    Risk Impact : Sensitive URL parameters may leak to third-party endpoints.
+    Remediation : Configure 'Referrer-Policy: strict-origin-when-cross-origin' or 'no-referrer'.
+    Verification: curl -sI https://example.org | grep -i referrer-policy
+
+[6] [INFORMATIONAL] Modern TLS Protocol Enforced (ID: TLS-PROTO-MODERN)
+    Component   : TLS Handshake (example.org:443)
+    Confidence  : Confirmed
+    Evidence    : Negotiated: TLSv1.3 with cipher TLS_AES_256_GCM_SHA384
+    Explanation : Secure, modern TLS protocol successfully established.
+    Risk Impact : None. Encrypted transport active.
+    Remediation : Maintain server cipher suite hardening.
+    Verification: openssl s_client -connect example.org:443 -tls1_3
+
+[7] [INFORMATIONAL] TLS Certificate Valid and Trusted (ID: TLS-CERT-VALID)
+    Component   : TLS Certificate Validity
+    Confidence  : Confirmed
+    Evidence    : Valid for 447 more days. Issuer: C=US, O=DigiCert Inc, CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1
+    Explanation : Certificate is currently active, trusted by root store, and has healthy validity duration.
+    Risk Impact : None. Active defense.
+    Remediation : Keep auto-renewal active.
+    Verification: openssl x509 -noout -dates
+
+[8] [INFORMATIONAL] SPF Record Configured (ID: DNS-SPF-OK)
+    Component   : DNS TXT (example.org)
+    Confidence  : Confirmed
+    Evidence    : Observed SPF: v=spf1 -all
+    Explanation : Valid SPF record detected with sender restriction.
+    Risk Impact : None. Defensive email posture active.
+    Remediation : Periodically review authorized sending IPs in SPF.
+    Verification: dig +short example.org TXT
+
+----------------------------------------------------------------------------
+SCAN LIMITATIONS & DEFENSIVE SCOPE NOTICE
+----------------------------------------------------------------------------
+1. This assessment only evaluates externally observable network endpoints, TLS configurations,
+   DNS records, and HTTP response headers.
+2. No exploitation, authentication bypass, denial of service, or source code reverse engineering
+   was attempted or included.
+3. WebShield AI is designed to assist authorized owners in applying defensive hardening fixes.
+
+============================================================================
+Generated by WebShield AI (Termux & Web Edition)
+============================================================================

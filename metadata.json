@@ -1,0 +1,6 @@
+{
+  "name": "WebShield AI — Website Security Checker for Termux",
+  "description": "Advanced website security configuration checker for Android Termux & Web Dashboard. Inspects HTTP security headers, TLS/SSL certificates, DNS records, safe misconfigurations, risk scoring, and generates comprehensive reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

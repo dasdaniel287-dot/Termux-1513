@@ -1,0 +1,188 @@
+{
+  "id": "ws_sample_audit_2026",
+  "timestamp": "2026-10-25 11:30:00",
+  "target_url": "https://example.org/",
+  "domain": "example.org",
+  "port": 443,
+  "scheme": "https",
+  "resolved_ips": ["93.184.215.14"],
+  "duration_seconds": 1.42,
+  "status": "completed",
+  "checks_performed": [
+    "Authorization Confirmation Check",
+    "URL Format and Scope Validation",
+    "Anti-SSRF and Private Range Guardrails",
+    "DNS Record & Email Anti-Spoofing Audit (SPF/DMARC)",
+    "TLS/SSL Certificate Expiration & Cipher Suite Verification",
+    "HTTP Endpoint Availability & Latency Audit",
+    "HTTP Defensive Security Headers Analysis",
+    "Public Security Policy & Crawling Hygiene (security.txt, robots.txt)"
+  ],
+  "http_info": {
+    "status_code": 200,
+    "response_time_ms": 142.5,
+    "redirect_chain": [],
+    "final_url": "https://example.org/",
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "server": "ECS (dcb/7F3B)",
+      "cache-control": "max-age=604800"
+    }
+  },
+  "tls_info": {
+    "hostname": "example.org",
+    "port": 443,
+    "connected": true,
+    "verified": true,
+    "tls_version": "TLSv1.3",
+    "cipher": "TLS_AES_256_GCM_SHA384",
+    "issuer": "C=US, O=DigiCert Inc, CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1",
+    "subject": "C=US, ST=California, L=Los Angeles, O=Internet Corporation for Assigned Names and Numbers, CN=*.example.org",
+    "expires_at": "2027-01-15T12:00:00Z",
+    "days_until_expiration": 447,
+    "san": ["example.org", "*.example.org"],
+    "error": null
+  },
+  "dns_records": {
+    "A": ["93.184.215.14"],
+    "AAAA": ["2606:2800:21f:cb07:6820:80da:af6b:8b2c"],
+    "MX": ["0 ."],
+    "NS": ["a.iana-servers.net.", "b.iana-servers.net."],
+    "TXT": ["v=spf1 -all"],
+    "CNAME": [],
+    "DMARC": ["v=DMARC1; p=reject;"]
+  },
+  "findings": [
+    {
+      "id": "HDR-HSTS-MISSING",
+      "check_name": "Strict-Transport-Security Missing",
+      "severity": "High",
+      "evidence": "Strict-Transport-Security header not present in HTTPS response.",
+      "affected_component": "HTTP Response Headers",
+      "current_value": null,
+      "technical_explanation": "HTTP Strict Transport Security (HSTS) instructs compliant browsers that the domain must only be contacted over HTTPS for a specified duration.",
+      "potential_impact": "Vulnerable to Man-in-the-Middle (MitM) SSL stripping and insecure HTTP downgrades when users first visit via bookmark or typed domain.",
+      "recommended_fix": "Add 'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload' in web server config.",
+      "verification_steps": "curl -sI https://example.org | grep -i strict-transport-security",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "HDR-CSP-MISSING",
+      "check_name": "Content-Security-Policy Header Missing",
+      "severity": "High",
+      "evidence": "Content-Security-Policy header not returned in response.",
+      "affected_component": "HTTP Response Headers",
+      "current_value": null,
+      "technical_explanation": "Content Security Policy (CSP) is a critical defensive HTTP response header that helps prevent and mitigate Cross-Site Scripting (XSS), data injection, and malicious clickjacking.",
+      "potential_impact": "Higher blast radius if an XSS flaw exists on the application layer.",
+      "recommended_fix": "Define a strict CSP beginning with: default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';",
+      "verification_steps": "curl -sI https://example.org | grep -i content-security-policy",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "HDR-XCTO-MISSING",
+      "check_name": "X-Content-Type-Options Header Missing",
+      "severity": "Medium",
+      "evidence": "X-Content-Type-Options header was not returned.",
+      "affected_component": "HTTP Response Headers",
+      "current_value": null,
+      "technical_explanation": "X-Content-Type-Options stops browsers from MIME-sniffing a response away from the declared content-type.",
+      "potential_impact": "Browsers may interpret non-executable MIME types as executable JavaScript or HTML, leading to Drive-by downloads or XSS.",
+      "recommended_fix": "Configure header: X-Content-Type-Options: nosniff",
+      "verification_steps": "curl -sI https://example.org | grep -i x-content-type-options",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "HDR-XFO-MISSING",
+      "check_name": "Clickjacking Protection Missing (X-Frame-Options)",
+      "severity": "Medium",
+      "evidence": "Neither X-Frame-Options nor CSP frame-ancestors detected.",
+      "affected_component": "HTTP Response Headers",
+      "current_value": null,
+      "technical_explanation": "The X-Frame-Options header indicates whether a browser should be allowed to render a page inside a frame or iframe.",
+      "potential_impact": "UI redressing / Clickjacking attacks could trick authenticated users into unauthorized clicks.",
+      "recommended_fix": "Add 'X-Frame-Options: DENY' or 'X-Frame-Options: SAMEORIGIN', and include CSP 'frame-ancestors'.",
+      "verification_steps": "Test framing via a local HTML file with <iframe src='target_url'>.",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "HDR-REF-MISSING",
+      "check_name": "Referrer-Policy Header Missing",
+      "severity": "Low",
+      "evidence": "Referrer-Policy header is absent.",
+      "affected_component": "HTTP Response Headers",
+      "current_value": null,
+      "technical_explanation": "Referrer-Policy governs how much referrer information is sent along with requests made from your site.",
+      "potential_impact": "Sensitive URL parameters may leak to third-party endpoints.",
+      "recommended_fix": "Configure 'Referrer-Policy: strict-origin-when-cross-origin' or 'no-referrer'.",
+      "verification_steps": "curl -sI https://example.org | grep -i referrer-policy",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "TLS-PROTO-MODERN",
+      "check_name": "Modern TLS Protocol Enforced",
+      "severity": "Informational",
+      "evidence": "Negotiated: TLSv1.3 with cipher TLS_AES_256_GCM_SHA384",
+      "affected_component": "TLS Handshake (example.org:443)",
+      "current_value": "TLSv1.3",
+      "technical_explanation": "Secure, modern TLS protocol successfully established.",
+      "potential_impact": "None. Encrypted transport active.",
+      "recommended_fix": "Maintain server cipher suite hardening.",
+      "verification_steps": "openssl s_client -connect example.org:443 -tls1_3",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "TLS-CERT-VALID",
+      "check_name": "TLS Certificate Valid and Trusted",
+      "severity": "Informational",
+      "evidence": "Valid for 447 more days. Issuer: C=US, O=DigiCert Inc, CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1",
+      "affected_component": "TLS Certificate Validity",
+      "current_value": "447 days remaining",
+      "technical_explanation": "Certificate is currently active, trusted by root store, and has healthy validity duration.",
+      "potential_impact": "None. Active defense.",
+      "recommended_fix": "Keep auto-renewal active.",
+      "verification_steps": "openssl x509 -noout -dates",
+      "confidence_level": "Confirmed"
+    },
+    {
+      "id": "DNS-SPF-OK",
+      "check_name": "SPF Record Configured",
+      "severity": "Informational",
+      "evidence": "Observed SPF: v=spf1 -all",
+      "affected_component": "DNS TXT (example.org)",
+      "current_value": "v=spf1 -all",
+      "technical_explanation": "Valid SPF record detected with sender restriction.",
+      "potential_impact": "None. Defensive email posture active.",
+      "recommended_fix": "Periodically review authorized sending IPs in SPF.",
+      "verification_steps": "dig +short example.org TXT",
+      "confidence_level": "Confirmed"
+    }
+  ],
+  "score_data": {
+    "score": 54,
+    "grade": "F",
+    "status": "completed",
+    "total_deduction": 46.0,
+    "explanation": "Base Score of 100 with 5 risk deductions totaling 46.0 points applied. Findings summary: 0 Critical, 2 High, 2 Medium, 1 Low, 3 Informational.",
+    "counts": {
+      "Critical": 0,
+      "High": 2,
+      "Medium": 2,
+      "Low": 1,
+      "Informational": 3
+    },
+    "disclaimer": "WebShield AI Score Notice: This security score evaluates observable external configurations (HTTP security headers, TLS parameters, DNS records, safe redirects). A high score reflects strong baseline defensive hygiene, but does NOT guarantee total immunity against internal application logic, database flaws, or 0-day exploits. Regular holistic security audits are recommended."
+  },
+  "summary": {
+    "score": 54,
+    "grade": "F",
+    "total_findings": 8,
+    "counts": {
+      "Critical": 0,
+      "High": 2,
+      "Medium": 2,
+      "Low": 1,
+      "Informational": 3
+    }
+  }
+}

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebShield AI Security Report - example.org</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        code, pre, .font-mono { font-family: 'JetBrains Mono', monospace; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="flex flex-wrap items-center justify-between border-b border-slate-800 pb-6 mb-8 gap-4">
+            <div>
+                <div class="text-xs font-mono text-cyan-400 font-semibold tracking-wider uppercase mb-1">WebShield AI Security Assessment</div>
+                <h1 class="text-2xl md:text-3xl font-bold text-white tracking-tight">example.org</h1>
+                <div class="text-xs text-slate-400 mt-1">Generated 2026-10-25 11:30:00 UTC · Target URL: https://example.org/</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 text-center min-w-[130px]">
+                <div class="text-3xl font-black font-mono" style="color: #ef4444">54</div>
+                <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Grade: F</div>
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 mb-8">
+            <h2 class="text-base font-bold text-white mb-2">Executive Summary & Audit Scope</h2>
+            <p class="text-sm text-slate-300 leading-relaxed mb-4">Base Score of 100 with 5 risk deductions totaling 46.0 points applied. Findings summary: 0 Critical, 2 High, 2 Medium, 1 Low, 3 Informational.</p>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-3 border-t border-slate-800 text-center">
+                <div class="p-2.5 rounded-lg bg-red-950/40 border border-red-900/60">
+                    <div class="text-xl font-bold text-red-400 font-mono">0</div>
+                    <div class="text-xs text-slate-400 uppercase">Critical</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-orange-950/40 border border-orange-900/60">
+                    <div class="text-xl font-bold text-orange-400 font-mono">2</div>
+                    <div class="text-xs text-slate-400 uppercase">High</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-amber-950/40 border border-amber-900/60">
+                    <div class="text-xl font-bold text-amber-400 font-mono">2</div>
+                    <div class="text-xs text-slate-400 uppercase">Medium</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-blue-950/40 border border-blue-900/60">
+                    <div class="text-xl font-bold text-blue-400 font-mono">1</div>
+                    <div class="text-xs text-slate-400 uppercase">Low</div>
+                </div>
+                <div class="p-2.5 rounded-lg bg-slate-800/40 border border-slate-700/60">
+                    <div class="text-xl font-bold text-slate-400 font-mono">3</div>
+                    <div class="text-xs text-slate-400 uppercase">Informational</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checks Run -->
+        <div class="mb-8">
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wider mb-3">Checks Completed</h3>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-400 bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+                <li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> Authorization Confirmation Check</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> URL Format and Scope Validation</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> Anti-SSRF and Private Range Guardrails</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> DNS Record & Email Anti-Spoofing Audit (SPF/DMARC)</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> TLS/SSL Certificate Expiration & Cipher Suite Verification</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> HTTP Endpoint Availability & Latency Audit</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> HTTP Defensive Security Headers Analysis</li><li class='flex items-center gap-2'><span class='text-emerald-400'>✓</span> Public Security Policy & Crawling Hygiene (security.txt, robots.txt)</li>
+            </ul>
+        </div>
+
+        <!-- Findings -->
+        <div class="mb-10">
+            <h3 class="text-base font-bold text-white mb-4">Detailed Findings & Remediation</h3>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-orange-950 text-orange-300 border-orange-800">HIGH</span>
+                        <h4 class="text-base font-bold text-slate-100">Strict-Transport-Security Missing</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: HDR-HSTS-MISSING · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">HTTP Response Headers</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Strict-Transport-Security header not present in HTTPS response.</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> HTTP Strict Transport Security (HSTS) instructs compliant browsers that the domain must only be contacted over HTTPS for a specified duration.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> Vulnerable to Man-in-the-Middle (MitM) SSL stripping and insecure HTTP downgrades when users first visit via bookmark or typed domain.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Add 'Strict-Transport-Security: max-age=31536000; includeSubDomains; preload' in web server config.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            curl -sI https://example.org | grep -i strict-transport-security
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-orange-950 text-orange-300 border-orange-800">HIGH</span>
+                        <h4 class="text-base font-bold text-slate-100">Content-Security-Policy Header Missing</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: HDR-CSP-MISSING · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">HTTP Response Headers</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Content-Security-Policy header not returned in response.</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> Content Security Policy (CSP) is a critical defensive HTTP response header that helps prevent and mitigate Cross-Site Scripting (XSS), data injection, and malicious clickjacking.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> Higher blast radius if an XSS flaw exists on the application layer.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Define a strict CSP beginning with: default-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            curl -sI https://example.org | grep -i content-security-policy
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-amber-950 text-amber-300 border-amber-800">MEDIUM</span>
+                        <h4 class="text-base font-bold text-slate-100">X-Content-Type-Options Header Missing</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: HDR-XCTO-MISSING · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">HTTP Response Headers</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">X-Content-Type-Options header was not returned.</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> X-Content-Type-Options stops browsers from MIME-sniffing a response away from the declared content-type.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> Browsers may interpret non-executable MIME types as executable JavaScript or HTML, leading to Drive-by downloads or XSS.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Configure header: X-Content-Type-Options: nosniff</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            curl -sI https://example.org | grep -i x-content-type-options
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-amber-950 text-amber-300 border-amber-800">MEDIUM</span>
+                        <h4 class="text-base font-bold text-slate-100">Clickjacking Protection Missing (X-Frame-Options)</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: HDR-XFO-MISSING · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">HTTP Response Headers</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Neither X-Frame-Options nor CSP frame-ancestors detected.</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> The X-Frame-Options header indicates whether a browser should be allowed to render a page inside a frame or iframe.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> UI redressing / Clickjacking attacks could trick authenticated users into unauthorized clicks.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Add 'X-Frame-Options: DENY' or 'X-Frame-Options: SAMEORIGIN', and include CSP 'frame-ancestors'.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            Test framing via a local HTML file with <iframe src='target_url'>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-blue-950 text-blue-300 border-blue-800">LOW</span>
+                        <h4 class="text-base font-bold text-slate-100">Referrer-Policy Header Missing</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: HDR-REF-MISSING · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">HTTP Response Headers</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Referrer-Policy header is absent.</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> Referrer-Policy governs how much referrer information is sent along with requests made from your site.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> Sensitive URL parameters may leak to third-party endpoints.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Configure 'Referrer-Policy: strict-origin-when-cross-origin' or 'no-referrer'.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            curl -sI https://example.org | grep -i referrer-policy
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-slate-900 text-slate-300 border-slate-700">INFORMATIONAL</span>
+                        <h4 class="text-base font-bold text-slate-100">Modern TLS Protocol Enforced</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: TLS-PROTO-MODERN · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">TLS Handshake (example.org:443)</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Negotiated: TLSv1.3 with cipher TLS_AES_256_GCM_SHA384</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> Secure, modern TLS protocol successfully established.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> None. Encrypted transport active.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Maintain server cipher suite hardening.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            openssl s_client -connect example.org:443 -tls1_3
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-slate-900 text-slate-300 border-slate-700">INFORMATIONAL</span>
+                        <h4 class="text-base font-bold text-slate-100">TLS Certificate Valid and Trusted</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: TLS-CERT-VALID · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">TLS Certificate Validity</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Valid for 447 more days. Issuer: C=US, O=DigiCert Inc, CN=DigiCert Global G2 TLS RSA SHA256 2020 CA1</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> Certificate is currently active, trusted by root store, and has healthy validity duration.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> None. Active defense.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Keep auto-renewal active.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            openssl x509 -noout -dates
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                    <div class="flex items-center gap-3">
+                        <span class="text-xs px-2.5 py-1 rounded font-semibold border bg-slate-900 text-slate-300 border-slate-700">INFORMATIONAL</span>
+                        <h4 class="text-base font-bold text-slate-100">SPF Record Configured</h4>
+                    </div>
+                    <span class="text-xs font-mono text-slate-400">ID: DNS-SPF-OK · Confidence: Confirmed</span>
+                </div>
+                <div class="space-y-2 text-sm text-slate-300">
+                    <p><strong class="text-slate-200">Component:</strong> <span class="font-mono text-xs">DNS TXT (example.org)</span></p>
+                    <p><strong class="text-slate-200">Evidence:</strong> <span class="font-mono text-xs text-cyan-300">Observed SPF: v=spf1 -all</span></p>
+                    <p><strong class="text-slate-200">Technical Analysis:</strong> Valid SPF record detected with sender restriction.</p>
+                    <p><strong class="text-slate-200">Potential Impact:</strong> None. Defensive email posture active.</p>
+                    <div class="mt-3 p-3 rounded-lg bg-slate-950 border border-slate-800">
+                        <div class="text-xs font-semibold text-emerald-400 mb-1">RECOMMENDED REMEDIATION:</div>
+                        <div class="text-xs text-slate-200">Periodically review authorized sending IPs in SPF.</div>
+                        <div class="text-xs font-mono text-slate-400 mt-2 bg-slate-900 p-2 rounded">
+                            <span class="text-slate-500"># Verification step:</span><br/>
+                            dig +short example.org TXT
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Limitations & Disclaimer -->
+        <div class="p-5 rounded-xl bg-slate-900/40 border border-slate-800/80 text-xs text-slate-400 space-y-2">
+            <div class="font-bold text-slate-300 uppercase tracking-wider">Audit Limitations & Notice</div>
+            <p>WebShield AI Score Notice: This security score evaluates observable external configurations (HTTP security headers, TLS parameters, DNS records, safe redirects). A high score reflects strong baseline defensive hygiene, but does NOT guarantee total immunity against internal application logic, database flaws, or 0-day exploits. Regular holistic security audits are recommended.</p>
+            <p>Assessment executed by WebShield AI in authorized defensive configuration auditing mode.</p>
+        </div>
+    </div>
+</body>
+</html>
